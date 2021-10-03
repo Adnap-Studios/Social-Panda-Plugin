@@ -6,18 +6,22 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
+import java.sql.SQLException;
 
 public class SocialPanda extends Plugin {
     public static Configuration configuration;
     private File file;
+    public static DatabaseManager databaseManager;
 
     @Override
     public void onEnable() {
         try {
             createConfig();
             readConfig();
+            databaseManager = new DatabaseManager();
+            getLogger().info("[Social Panda Plugin] Database connection: " + databaseManager.isConnected());
             getLogger().info("[Social Panda Plugin] Plugin loaded!");
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
