@@ -166,4 +166,14 @@ public class DatabaseManager {
         statement.executeUpdate(query);
     }
 
+    public void updateLastOnline(String uuid) throws SQLException {
+        String query = String.format("UPDATE `socialpanda_users` " +
+                        "SET `last_online` = CURRENT_TIME() " +
+                        "WHERE `socialpanda_users`.`uuid` = '%s';",
+                uuid);
+
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(query);
+    }
+
 }

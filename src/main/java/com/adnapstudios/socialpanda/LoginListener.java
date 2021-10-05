@@ -16,6 +16,7 @@ public class LoginListener implements Listener {
             if (event.getPlayer().isConnected()) {
                 ProxiedPlayer player = event.getPlayer();
                 SocialPanda.getDatabaseManager().addPlayer(player.getUniqueId().toString(), player.getDisplayName());
+                SocialPanda.getDatabaseManager().updateLastOnline(player.getUniqueId().toString());
             }
         } catch (SQLException exception) {
             exception.printStackTrace();

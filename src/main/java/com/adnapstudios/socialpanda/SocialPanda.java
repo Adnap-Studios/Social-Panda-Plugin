@@ -23,6 +23,7 @@ public class SocialPanda extends Plugin {
             databaseManager = new DatabaseManager();
             getLogger().info("[Social Panda Plugin] Database connection: " + databaseManager.isConnected());
             getProxy().getPluginManager().registerListener(this, new LoginListener());
+            getProxy().getPluginManager().registerListener(this, new DisconnectListener());
             getLogger().info("[Social Panda Plugin] Plugin loaded!");
         } catch (IOException | SQLException e) {
             e.printStackTrace();
