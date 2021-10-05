@@ -4,7 +4,6 @@ import net.md_5.bungee.config.Configuration;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DatabaseManager {
     private String host;
@@ -99,7 +98,7 @@ public class DatabaseManager {
     }
 
     public void addPlayer(String uuid, String name) throws SQLException {
-        Player dbPlayer = getPlayerByUuid(uuid);
+        SocialPlayer dbPlayer = getPlayerByUuid(uuid);
         if (dbPlayer != null) return;
 
         String query = String.format("INSERT INTO `socialpanda_users` " +
@@ -113,16 +112,16 @@ public class DatabaseManager {
         statement.executeUpdate(query);
     }
 
-    public ArrayList<Player> getAllPlayers() throws SQLException {
+    public ArrayList<SocialPlayer> getAllPlayers() throws SQLException {
         String query = "SELECT * FROM `socialpanda_users`";
 
         Statement statement = connection.createStatement();
         ResultSet results = statement.executeQuery(query);
 
-        ArrayList<Player> players = new ArrayList<>();
+        ArrayList<SocialPlayer> players = new ArrayList<>();
 
         while (results.next()) {
-            Player player = new Player();
+            SocialPlayer player = new SocialPlayer();
             player.setUuid(results.getString("uuid"));
             player.setName(results.getString("name"));
             player.setLastOnline(results.getTimestamp("last_online"));
@@ -133,12 +132,12 @@ public class DatabaseManager {
         return players;
     }
 
-    public Player getPlayerByUuid(String uuid) throws SQLException {
-        ArrayList<Player> players = getAllPlayers();
+    public SocialPlayer getPlayerByUuid(String uuid) throws SQLException {
+        ArrayList<SocialPlayer> players = getAllPlayers();
 
         if (players == null || players.size() == 0) return null;
 
-        for (Player player : players) {
+        for (SocialPlayer player : players) {
             if (player.getUuid().equalsIgnoreCase(uuid)) {
                 return player;
             }
@@ -149,8 +148,8 @@ public class DatabaseManager {
 
     public ArrayList<String> getListOfPlayers() throws SQLException {
         ArrayList<String> names = new ArrayList<>();
-        ArrayList<Player> players = getAllPlayers();
-        for (Player player : players) {
+        ArrayList<SocialPlayer> players = getAllPlayers();
+        for (SocialPlayer player : players) {
             names.add(player.getName());
         }
 
@@ -167,33 +166,4 @@ public class DatabaseManager {
         statement.executeUpdate(query);
     }
 
-    private static class Player {
-        private String uuid;
-        private String name;
-        private Timestamp lastOnline;
-
-        public String getUuid() {
-            return uuid;
-        }
-
-        public void setUuid(String uuid) {
-            this.uuid = uuid;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Date getLastOnline() {
-            return lastOnline;
-        }
-
-        public void setLastOnline(Timestamp lastOnline) {
-            this.lastOnline = lastOnline;
-        }
-    }
 }
