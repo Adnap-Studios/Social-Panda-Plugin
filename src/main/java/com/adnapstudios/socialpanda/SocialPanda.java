@@ -11,19 +11,30 @@ import java.sql.SQLException;
 public class SocialPanda extends Plugin {
     public static Configuration configuration;
     private File file;
-    public static DatabaseManager databaseManager;
+    private static DatabaseManager databaseManager;
+    private static SocialPanda instance;
 
     @Override
     public void onEnable() {
         try {
+            instance = (this);
             createConfig();
             readConfig();
             databaseManager = new DatabaseManager();
             getLogger().info("[Social Panda Plugin] Database connection: " + databaseManager.isConnected());
+            getProxy().getPluginManager().registerListener(this, new LoginListener());
             getLogger().info("[Social Panda Plugin] Plugin loaded!");
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static SocialPanda getInstance() {
+        return instance;
+    }
+
+    public static DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 
     public void readConfig() throws IOException {
