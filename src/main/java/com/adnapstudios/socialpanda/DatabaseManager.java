@@ -76,7 +76,7 @@ public class DatabaseManager {
                         "PRIMARY KEY (`uuid1`,`uuid2`)" +
                         ");",
 
-                "CREATE TABLE `socialpanda_requests` (" +
+                "CREATE TABLE IF NOT EXISTS `socialpanda_requests` (" +
                         "`id` INT NOT NULL AUTO_INCREMENT," +
                         "`sender` VARCHAR(100) NOT NULL," +
                         "`receiver` VARCHAR(100) NOT NULL," +
@@ -174,6 +174,21 @@ public class DatabaseManager {
 
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
+    }
+
+    public void checkName(String uuid, String name) throws SQLException {
+        SocialPlayer player = getPlayerByUuid(uuid);
+
+        if (!player.getName().equals(name)) {
+            String query = String.format("UPDATE `socialpanda_users` " +
+                            "SET `name` = '%s' " +
+                            "WHERE `socialpanda_users`.`uuid` = '%s';",
+                    name,
+                    uuid);
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        }
     }
 
 }
