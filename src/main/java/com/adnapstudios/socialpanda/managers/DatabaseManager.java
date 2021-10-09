@@ -7,6 +7,8 @@ import net.md_5.bungee.config.Configuration;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class DatabaseManager {
     private String host;
@@ -237,15 +239,9 @@ public class DatabaseManager {
 
         if (friendRequests == null || friendRequests.size() == 0) return null;
 
-        for (FriendRequest friendRequest : friendRequests) {
-            if (friendRequest.getSender().getUuid().equals(sender)) {
-                if (friendRequest.getReceiver().getUuid().equals(receiver)) {
-                    return friendRequest;
-                }
-            }
-        }
-
-        return null;
+        return friendRequests.stream()
+                .filter(r -> r.getSender().getUuid().equals(sender) &&
+                r.getReceiver().getUuid().equals(receiver)).findFirst().orElse(null);
     }
 
     public void removeFriendRequest(FriendRequest friendRequest) throws SQLException {
@@ -257,4 +253,5 @@ public class DatabaseManager {
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
     }
+
 }

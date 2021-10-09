@@ -58,7 +58,7 @@ public class FriendRequest {
         ProxiedPlayer proxiedSender = SocialPanda.getInstance().getProxy().getPlayer(UUID.fromString(sender.getUuid()));
         ProxiedPlayer proxiedReceiver = SocialPanda.getInstance().getProxy().getPlayer(UUID.fromString(receiver.getUuid()));
 
-        BaseComponent[] who = new ComponentBuilder(sender.getName() + " send you a friend request.\n").color(ChatColor.BLUE).create();
+        BaseComponent[] who = new ComponentBuilder(sender.getName() + " sent you a friend request.\n").color(ChatColor.BLUE).create();
         BaseComponent[] accept = new ComponentBuilder("ACCEPT").color(ChatColor.GREEN).bold(true).create();
         BaseComponent[] decline = new ComponentBuilder("DECLINE").color(ChatColor.RED).bold(true).create();
 

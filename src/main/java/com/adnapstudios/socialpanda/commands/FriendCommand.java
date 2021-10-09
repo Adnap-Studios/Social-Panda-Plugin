@@ -3,6 +3,7 @@ package com.adnapstudios.socialpanda.commands;
 import com.adnapstudios.socialpanda.SocialPanda;
 import com.adnapstudios.socialpanda.models.FriendRequest;
 import com.adnapstudios.socialpanda.models.SocialPlayer;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -52,17 +53,23 @@ public class FriendCommand extends Command {
                     return;
                 } else {
                     if (strings[0].equalsIgnoreCase("accept")) {
-                        SocialPlayer sender = SocialPanda.getPlayerManager()
+                        SocialPlayer receiver = SocialPanda.getPlayerManager()
                                 .getPlayerByUUID(((ProxiedPlayer) commandSender).getUniqueId().toString());
 
-                        ProxiedPlayer proxiedReceiver = SocialPanda.getInstance().getProxy().getPlayer(strings[1]);
+                        ProxiedPlayer proxiedSender = SocialPanda.getInstance().getProxy().getPlayer(strings[1]);
 
-                        SocialPlayer receiver = SocialPanda.getPlayerManager()
-                                .getPlayerByUUID(proxiedReceiver.getUniqueId().toString());
+                        SocialPlayer sender = SocialPanda.getPlayerManager()
+                                .getPlayerByUUID(proxiedSender.getUniqueId().toString());
 
                         try {
                             FriendRequest friendRequest = SocialPanda.getDatabaseManager()
                                     .getFriendRequest(sender.getUuid(), receiver.getUuid());
+
+                            if (friendRequest == null) {
+                                friendRequestNotFound((ProxiedPlayer) commandSender);
+                                return;
+                            }
+
                             SocialPanda.getFriendRequestManager().accept(friendRequest);
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -81,6 +88,12 @@ public class FriendCommand extends Command {
                         try {
                             FriendRequest friendRequest = SocialPanda.getDatabaseManager()
                                     .getFriendRequest(sender.getUuid(), receiver.getUuid());
+
+                            if (friendRequest == null) {
+                                friendRequestNotFound((ProxiedPlayer) commandSender);
+                                return;
+                            }
+
                             SocialPanda.getFriendRequestManager().decline(friendRequest);
 
                             proxiedReceiver.sendMessage(new TextComponent(String.format("You declined %s's friend request.",
@@ -96,5 +109,12 @@ public class FriendCommand extends Command {
                 // TODO
             }
         }
+    }
+
+    private void friendRequestNotFound(ProxiedPlayer player) {
+        TextComponent textComponent = new TextComponent("This friend request does not exist.");
+        textComponent.setColor(ChatColor.RED);
+        textComponent.setBold(true);
+        player.sendMessage(textComponent);
     }
 }
