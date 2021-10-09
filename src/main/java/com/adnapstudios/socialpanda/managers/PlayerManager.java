@@ -1,4 +1,7 @@
-package com.adnapstudios.socialpanda;
+package com.adnapstudios.socialpanda.managers;
+
+import com.adnapstudios.socialpanda.SocialPanda;
+import com.adnapstudios.socialpanda.models.SocialPlayer;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

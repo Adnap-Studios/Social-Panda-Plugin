@@ -1,4 +1,4 @@
-package com.adnapstudios.socialpanda;
+package com.adnapstudios.socialpanda.models;
 
 import java.sql.Timestamp;
 import java.util.Date;

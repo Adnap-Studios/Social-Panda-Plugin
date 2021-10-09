@@ -1,11 +1,12 @@
-package com.adnapstudios.socialpanda;
+package com.adnapstudios.socialpanda.managers;
 
+import com.adnapstudios.socialpanda.models.FriendRequest;
+import com.adnapstudios.socialpanda.SocialPanda;
+import com.adnapstudios.socialpanda.models.SocialPlayer;
 import net.md_5.bungee.config.Configuration;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Optional;
 
 public class DatabaseManager {
     private String host;

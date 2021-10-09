@@ -1,5 +1,11 @@
 package com.adnapstudios.socialpanda;
 
+import com.adnapstudios.socialpanda.commands.FriendCommand;
+import com.adnapstudios.socialpanda.listeners.DisconnectListener;
+import com.adnapstudios.socialpanda.listeners.LoginListener;
+import com.adnapstudios.socialpanda.managers.DatabaseManager;
+import com.adnapstudios.socialpanda.managers.FriendRequestManager;
+import com.adnapstudios.socialpanda.managers.PlayerManager;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;

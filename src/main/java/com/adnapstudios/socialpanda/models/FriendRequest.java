@@ -1,5 +1,6 @@
-package com.adnapstudios.socialpanda;
+package com.adnapstudios.socialpanda.models;
 
+import com.adnapstudios.socialpanda.SocialPanda;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

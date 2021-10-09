@@ -1,5 +1,8 @@
-package com.adnapstudios.socialpanda;
+package com.adnapstudios.socialpanda.commands;
 
+import com.adnapstudios.socialpanda.SocialPanda;
+import com.adnapstudios.socialpanda.models.FriendRequest;
+import com.adnapstudios.socialpanda.models.SocialPlayer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
