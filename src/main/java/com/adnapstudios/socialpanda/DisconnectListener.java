@@ -1,5 +1,6 @@
 package com.adnapstudios.socialpanda;
 
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -12,7 +13,9 @@ public class DisconnectListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onDisconnect(final PlayerDisconnectEvent event) {
         try {
-            SocialPanda.getDatabaseManager().updateLastOnline(event.getPlayer().getUniqueId().toString());
+            ProxiedPlayer player = event.getPlayer();
+            SocialPanda.getDatabaseManager().updateLastOnline(player.getUniqueId().toString());
+            SocialPanda.getPlayerManager().playerOffline(player.getUniqueId().toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }

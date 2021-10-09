@@ -18,6 +18,7 @@ public class LoginListener implements Listener {
                 SocialPanda.getDatabaseManager().addPlayer(player.getUniqueId().toString(), player.getDisplayName());
                 SocialPanda.getDatabaseManager().updateLastOnline(player.getUniqueId().toString());
                 SocialPanda.getDatabaseManager().checkName(player.getUniqueId().toString(), player.getName());
+                SocialPanda.getPlayerManager().playerOnline(player.getUniqueId().toString());
             }
         } catch (SQLException exception) {
             exception.printStackTrace();

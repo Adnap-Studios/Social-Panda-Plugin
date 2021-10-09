@@ -4,6 +4,8 @@ import net.md_5.bungee.config.Configuration;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Optional;
 
 public class DatabaseManager {
     private String host;
@@ -191,4 +193,67 @@ public class DatabaseManager {
         }
     }
 
+    public void addFriends(FriendRequest friendRequest) throws SQLException {
+        removeFriendRequest(friendRequest);
+
+        String query = String.format("INSERT INTO `socialpanda_friends` (`uuid1`, `uuid2`) " +
+                        "VALUES ('%s', '%s');",
+                friendRequest.getSender().getUuid(),
+                friendRequest.getReceiver().getUuid());
+
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(query);
+    }
+
+    public ArrayList<FriendRequest> getAllFriendRequests() throws SQLException {
+        String query = "SELECT * FROM `socialpanda_requests`";
+
+        Statement statement = connection.createStatement();
+        ResultSet results = statement.executeQuery(query);
+
+        ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+        ArrayList<SocialPlayer> socialPlayers = getAllPlayers();
+
+        while (results.next()) {
+            String uuid1 = results.getString("sender");
+            String uuid2 = results.getString("receiver");
+
+            SocialPlayer sender = socialPlayers.stream().filter(p -> p.getUuid().equals(uuid1)).findFirst().orElse(null);
+            SocialPlayer receiver = socialPlayers.stream().filter(p -> p.getUuid().equals(uuid2)).findFirst().orElse(null);
+
+            Timestamp date = results.getTimestamp("date");
+
+            FriendRequest friendRequest = new FriendRequest(sender, receiver, date);
+
+            friendRequests.add(friendRequest);
+        }
+
+        return friendRequests;
+    }
+
+    public FriendRequest getFriendRequest(String sender, String receiver) throws SQLException {
+        ArrayList<FriendRequest> friendRequests = getAllFriendRequests();
+
+        if (friendRequests == null || friendRequests.size() == 0) return null;
+
+        for (FriendRequest friendRequest : friendRequests) {
+            if (friendRequest.getSender().getUuid().equals(sender)) {
+                if (friendRequest.getReceiver().getUuid().equals(receiver)) {
+                    return friendRequest;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void removeFriendRequest(FriendRequest friendRequest) throws SQLException {
+        String query = String.format("DELETE FROM `socialpanda_requests` " +
+                "WHERE `socialpanda_requests`.`sender` = '%s' AND `socialpanda_requests`.`receiver` = '%s'",
+                friendRequest.getSender().getUuid(),
+                friendRequest.getReceiver().getUuid());
+
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(query);
+    }
 }

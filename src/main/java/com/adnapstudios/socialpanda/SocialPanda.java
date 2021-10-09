@@ -13,6 +13,7 @@ public class SocialPanda extends Plugin {
     private File file;
     private static DatabaseManager databaseManager;
     private static PlayerManager playerManager;
+    private static FriendRequestManager friendRequestManager;
     private static SocialPanda instance;
 
     @Override
@@ -23,10 +24,12 @@ public class SocialPanda extends Plugin {
             readConfig();
             databaseManager = new DatabaseManager();
             playerManager = new PlayerManager();
+            friendRequestManager = new FriendRequestManager();
+            friendRequestManager.loadFriendRequests();
             getLogger().info("[Social Panda Plugin] Database connection: " + databaseManager.isConnected());
             getProxy().getPluginManager().registerListener(this, new LoginListener());
             getProxy().getPluginManager().registerListener(this, new DisconnectListener());
-            getProxy().getPluginManager().registerCommand(this, new FriendRequestCommand());
+            getProxy().getPluginManager().registerCommand(this, new FriendCommand());
             getLogger().info("[Social Panda Plugin] Plugin loaded!");
         } catch (IOException | SQLException e) {
             e.printStackTrace();
@@ -44,6 +47,8 @@ public class SocialPanda extends Plugin {
     public static PlayerManager getPlayerManager() {
         return playerManager;
     }
+
+    public static FriendRequestManager getFriendRequestManager() { return friendRequestManager; }
 
     public void readConfig() throws IOException {
         configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
