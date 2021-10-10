@@ -70,7 +70,7 @@ public class FriendRequest {
 
         proxiedReceiver.sendMessage(who[0], accept[0], new TextComponent(" | "), decline[0]);
 
-        TextComponent requestSent = new TextComponent("You're friend request to " + proxiedReceiver.getDisplayName() + " has been sent.");
+        TextComponent requestSent = new TextComponent("Your friend request to " + proxiedReceiver.getDisplayName() + " has been sent.");
         proxiedSender.sendMessage(requestSent);
     }
 
