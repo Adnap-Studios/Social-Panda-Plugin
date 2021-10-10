@@ -41,6 +41,7 @@ public class FriendCommand extends Command {
                 if (sender.getUuid().equals(receiver.getUuid())) {
                     TextComponent wrong = new TextComponent("You cannot send yourself a friend request.");
                     commandSender.sendMessage(wrong);
+                    return;
                 }
 
                 FriendRequest friendRequest = new FriendRequest(sender, receiver);
