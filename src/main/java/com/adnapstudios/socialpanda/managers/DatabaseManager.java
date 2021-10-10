@@ -7,8 +7,6 @@ import net.md_5.bungee.config.Configuration;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class DatabaseManager {
     private String host;
@@ -254,4 +252,31 @@ public class DatabaseManager {
         statement.executeUpdate(query);
     }
 
+    public ArrayList<SocialPlayer> getFriendsByUuid(String uuid) throws SQLException {
+        String query = String.format("SELECT * FROM `socialpanda_friends` " +
+                "WHERE `socialpanda_friends`.`uuid1` = '%s' OR `socialpanda_friends`.`uuid2` = '%s'",
+                uuid,
+                uuid);
+
+        Statement statement = connection.createStatement();
+        ResultSet results = statement.executeQuery(query);
+
+        ArrayList<SocialPlayer> friends = new ArrayList<>();
+
+        while (results.next()) {
+            String uuid1 = results.getString("uuid1");
+            String uuid2 = results.getString("uuid2");
+            SocialPlayer socialPlayer;
+
+            if (uuid1.equals("uuid")) {
+                 socialPlayer = SocialPanda.getPlayerManager().getPlayerByUUID(uuid2);
+            } else {
+                socialPlayer = SocialPanda.getPlayerManager().getPlayerByUUID(uuid1);
+            }
+
+            friends.add(socialPlayer);
+        }
+
+        return friends;
+    }
 }
