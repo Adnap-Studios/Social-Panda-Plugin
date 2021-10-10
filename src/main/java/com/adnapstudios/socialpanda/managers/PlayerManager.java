@@ -51,21 +51,23 @@ public class PlayerManager {
 
             if (online) {
                 message = new TextComponent(String.format("Your friend %s has entered the network.", player.getName()));
-                symbol = new TextComponent("+");
+                symbol = new TextComponent("+ ");
                 symbol.setColor(ChatColor.GREEN);
             } else {
                 message = new TextComponent(String.format("Your friend %s has left the network.", player.getName()));
-                symbol = new TextComponent("-");
+                symbol = new TextComponent("- ");
                 symbol.setColor(ChatColor.RED);
             }
 
             symbol.setBold(true);
 
+            SocialPanda.getInstance().getLogger().info("Friends (" +  friends.size() + ") of " + player.getName());
+
             for (SocialPlayer friend : friends) {
                 ProxiedPlayer proxiedFriend = SocialPanda.getInstance().getProxy().getPlayer(UUID.fromString(friend.getUuid()));
                 if (proxiedFriend != null && proxiedFriend.isConnected()) {
                     SocialPanda.getInstance().getLogger().info("Sending message to " + proxiedFriend.getName());
-                    proxiedFriend.sendMessage(message);
+                    proxiedFriend.sendMessage(symbol, message);
                 }
             }
 

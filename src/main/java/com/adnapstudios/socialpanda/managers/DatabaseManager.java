@@ -268,14 +268,14 @@ public class DatabaseManager {
             String uuid2 = results.getString("uuid2");
             SocialPlayer socialPlayer;
 
-            if (uuid1.equals("uuid")) {
-                 socialPlayer = SocialPanda.getPlayerManager().getPlayerByUUID(uuid2);
-            } else {
-                socialPlayer = SocialPanda.getPlayerManager().getPlayerByUUID(uuid1);
-            }
+            socialPlayer = SocialPanda.getPlayerManager().getPlayerByUUID(uuid1);
+            friends.add(socialPlayer);
 
+            socialPlayer = SocialPanda.getPlayerManager().getPlayerByUUID(uuid2);
             friends.add(socialPlayer);
         }
+
+        friends.removeIf(f -> f.getUuid().equals(uuid));
 
         return friends;
     }

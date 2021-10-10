@@ -38,6 +38,11 @@ public class FriendCommand extends Command {
                 SocialPlayer receiver = SocialPanda.getPlayerManager()
                         .getPlayerByUUID(proxiedReceiver.getUniqueId().toString());
 
+                if (sender.getUuid().equals(receiver.getUuid())) {
+                    TextComponent wrong = new TextComponent("You cannot send yourself a friend request.");
+                    commandSender.sendMessage(wrong);
+                }
+
                 FriendRequest friendRequest = new FriendRequest(sender, receiver);
                 friendRequest.send();
 
