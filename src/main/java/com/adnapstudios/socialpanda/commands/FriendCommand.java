@@ -20,7 +20,7 @@ public class FriendCommand extends Command {
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
         if (strings.length == 0) {
-            TextComponent wrong = new TextComponent("Usage: /friend add [player], /friend accept/decline [player], /friend list");
+            TextComponent wrong = new TextComponent("Usage: /friend add/remove [player], /friend accept/decline [player], /friend list");
             commandSender.sendMessage(wrong);
         } else {
             if (strings[0].equalsIgnoreCase("add")) {
@@ -35,6 +35,12 @@ public class FriendCommand extends Command {
 
                 ProxiedPlayer proxiedReceiver = SocialPanda.getInstance().getProxy().getPlayer(strings[1]);
 
+                if (proxiedReceiver == null) {
+                    TextComponent playerNotFound = new TextComponent("This player does not exist or is not online.");
+                    commandSender.sendMessage(playerNotFound);
+                    return;
+                }
+
                 SocialPlayer receiver = SocialPanda.getPlayerManager()
                         .getPlayerByUUID(proxiedReceiver.getUniqueId().toString());
 
@@ -48,6 +54,25 @@ public class FriendCommand extends Command {
                 friendRequest.send();
 
                 SocialPanda.getFriendRequestManager().add(friendRequest);
+
+                return;
+            }
+
+            if (strings[0].equalsIgnoreCase("remove")) {
+                if (strings.length < 2) {
+                    TextComponent wrong = new TextComponent("Usage: /friend remove [player]");
+                    commandSender.sendMessage(wrong);
+                    return;
+                } else {
+                    String uuid1 = ((ProxiedPlayer) commandSender).getUniqueId().toString();
+                    SocialPlayer socialPlayer = SocialPanda.getPlayerManager().getPlayerByName(strings[1]);
+                    String uuid2 = socialPlayer.getUuid();
+
+                    SocialPanda.getPlayerManager().removeFriend(uuid1, uuid2);
+
+                    TextComponent removedFriend = new TextComponent(String.format("You have removed %s as a friend.", socialPlayer.getName()));
+                    commandSender.sendMessage(removedFriend);
+                }
 
                 return;
             }

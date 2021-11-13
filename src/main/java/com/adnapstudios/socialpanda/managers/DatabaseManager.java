@@ -279,4 +279,20 @@ public class DatabaseManager {
 
         return friends;
     }
+
+    public void removeFriends(String uuid1, String uuid2) throws SQLException {
+        String query1 = String.format("DELETE FROM `socialpanda_friends` " +
+                "WHERE `socialpanda_friends`.`uuid1` = '%s' AND `socialpanda_friends`.`uuid2` = '%s'", uuid1, uuid2);
+
+        String query2 = String.format("DELETE FROM `socialpanda_friends` " +
+                "WHERE `socialpanda_friends`.`uuid1` = '%s' AND `socialpanda_friends`.`uuid2` = '%s'", uuid2, uuid1);
+
+        Statement statement;
+
+        statement = connection.createStatement();
+        statement.executeQuery(query1);
+
+        statement = connection.createStatement();
+        statement.executeQuery(query2);
+    }
 }

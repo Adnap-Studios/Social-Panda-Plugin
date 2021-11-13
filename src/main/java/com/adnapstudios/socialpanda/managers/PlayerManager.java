@@ -71,10 +71,27 @@ public class PlayerManager {
                 }
             }
 
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void removeFriend(String uuid1, String uuid2) {
+        try {
+            SocialPanda.getDatabaseManager().removeFriends(uuid1, uuid2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public SocialPlayer getPlayerByName(String name) {
+        try {
+            ArrayList<SocialPlayer> players = SocialPanda.getDatabaseManager().getAllPlayers();
+            return players.stream().filter(p -> p.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
