@@ -8,11 +8,12 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
 
-public class FriendCommand extends Command {
+public class FriendCommand extends Command implements TabExecutor {
 
     public FriendCommand() {
         super("friend", "socialpanda.user.friendrequest", "f");
@@ -162,5 +163,65 @@ public class FriendCommand extends Command {
         textComponent.setColor(ChatColor.RED);
         textComponent.setBold(true);
         player.sendMessage(textComponent);
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
+        ArrayList<String> subCommands = new ArrayList<>();
+        subCommands.add("add");
+        subCommands.add("remove");
+        subCommands.add("accept");
+        subCommands.add("decline");
+        subCommands.add("list");
+
+        Set<String> matches = new HashSet<>();
+
+        if (strings.length == 1) {
+            if (strings[0].equalsIgnoreCase("")) {
+                matches.addAll(subCommands);
+            } else {
+                for (String command : subCommands) {
+                    if (command.toLowerCase().startsWith(strings[0])) {
+                        matches.add(command);
+                    }
+                }
+            }
+        }
+
+        if (strings.length == 2) {
+            if (strings[0].equalsIgnoreCase("add")) {
+                Collection<ProxiedPlayer> allPlayers = SocialPanda.getInstance().getProxy().getPlayers();
+
+                if (strings[1].equalsIgnoreCase("")) {
+                    for (ProxiedPlayer player : allPlayers) {
+                        matches.add(player.getDisplayName());
+                    }
+                } else {
+                    for (ProxiedPlayer player : allPlayers) {
+                        if (player.getDisplayName().toLowerCase().startsWith(strings[1].toLowerCase())) {
+                            matches.add(player.getDisplayName());
+                        }
+                    }
+                }
+
+            } else if (strings[0].equalsIgnoreCase("remove")) {
+                ArrayList<SocialPlayer> allFriends = SocialPanda.getPlayerManager()
+                        .getPlayerFriendsByUUID(((ProxiedPlayer) commandSender).getUniqueId().toString());
+
+                if (strings[1].equalsIgnoreCase("")) {
+                    for (SocialPlayer player : allFriends) {
+                        matches.add(player.getName());
+                    }
+                } else {
+                    for (SocialPlayer player : allFriends) {
+                        if (player.getName().toLowerCase().startsWith(strings[1].toLowerCase())) {
+                            matches.add(player.getName());
+                        }
+                    }
+                }
+            }
+        }
+
+        return matches;
     }
 }

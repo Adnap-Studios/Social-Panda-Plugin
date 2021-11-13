@@ -94,4 +94,14 @@ public class PlayerManager {
 
         return null;
     }
+
+    public ArrayList<SocialPlayer> getPlayerFriendsByUUID(String uuid) {
+        try {
+            return SocialPanda.getDatabaseManager().getFriendsByUuid(uuid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
