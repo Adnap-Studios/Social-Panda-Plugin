@@ -10,6 +10,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class FriendCommand extends Command {
 
@@ -48,6 +49,20 @@ public class FriendCommand extends Command {
                     TextComponent wrong = new TextComponent("You cannot send yourself a friend request.");
                     commandSender.sendMessage(wrong);
                     return;
+                }
+
+                try {
+                    ArrayList<SocialPlayer> friends = SocialPanda.getDatabaseManager().getFriendsByUuid(sender.getUuid());
+                    SocialPlayer friend = friends.stream().filter(f ->
+                            f.getUuid().equalsIgnoreCase(receiver.getUuid())).findFirst().orElse(null);
+
+                    if (friend != null) {
+                        TextComponent alreadyFriends = new TextComponent("You are already friends with " + receiver.getName());
+                        commandSender.sendMessage(alreadyFriends);
+                        return;
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
 
                 FriendRequest friendRequest = new FriendRequest(sender, receiver);

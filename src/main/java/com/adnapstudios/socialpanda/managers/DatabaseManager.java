@@ -287,12 +287,13 @@ public class DatabaseManager {
         String query2 = String.format("DELETE FROM `socialpanda_friends` " +
                 "WHERE `socialpanda_friends`.`uuid1` = '%s' AND `socialpanda_friends`.`uuid2` = '%s'", uuid2, uuid1);
 
-        Statement statement;
 
-        statement = connection.createStatement();
-        statement.executeQuery(query1);
+        PreparedStatement statement;
 
-        statement = connection.createStatement();
-        statement.executeQuery(query2);
+        statement = connection.prepareStatement(query1);
+        statement.execute();
+
+        statement = connection.prepareStatement(query2);
+        statement.execute();
     }
 }
