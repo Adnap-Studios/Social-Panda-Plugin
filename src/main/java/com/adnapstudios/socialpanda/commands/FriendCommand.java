@@ -230,13 +230,7 @@ public class FriendCommand extends Command implements TabExecutor {
 
                 for (FriendRequest friendRequest : allFriendRequests) {
                     String sender = friendRequest.getSender().getName();
-                    String receiver = friendRequest.getReceiver().getName();
-
-                    if (!sender.equalsIgnoreCase(((ProxiedPlayer) commandSender).getDisplayName())) {
-                        allPlayerNames.add(sender);
-                    } else {
-                        allPlayerNames.add(receiver);
-                    }
+                    allPlayerNames.add(sender);
                 }
 
                 if (strings[1].equalsIgnoreCase("")) {
