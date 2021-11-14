@@ -21,6 +21,19 @@ public class FriendRequestManager {
         }
     }
 
+    public ArrayList<FriendRequest> getFriendRequestsFromPlayer(String uuid) {
+        ArrayList<FriendRequest> playerFriendRequest = new ArrayList<>();
+
+        for (FriendRequest friendRequest : friendRequests) {
+            if (friendRequest.getReceiver().getUuid().equalsIgnoreCase(uuid) ||
+                    friendRequest.getSender().getUuid().equalsIgnoreCase(uuid)) {
+                playerFriendRequest.add(friendRequest);
+            }
+        }
+
+        return playerFriendRequest;
+    }
+
     public void add(FriendRequest friendRequest) {
         try {
             SocialPanda.getDatabaseManager().addFriendRequest(friendRequest.getSender().getUuid(), friendRequest.getReceiver().getUuid());

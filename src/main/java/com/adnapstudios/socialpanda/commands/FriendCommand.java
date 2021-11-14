@@ -219,6 +219,36 @@ public class FriendCommand extends Command implements TabExecutor {
                         }
                     }
                 }
+
+            } else if (strings[0].equalsIgnoreCase("accept") ||
+                    strings[0].equalsIgnoreCase("decline")) {
+
+                ArrayList<FriendRequest> allFriendRequests = SocialPanda.getFriendRequestManager()
+                        .getFriendRequestsFromPlayer(((ProxiedPlayer) commandSender).getUniqueId().toString());
+
+                ArrayList<String> allPlayerNames = new ArrayList<>();
+
+                for (FriendRequest friendRequest : allFriendRequests) {
+                    String sender = friendRequest.getSender().getName();
+                    String receiver = friendRequest.getReceiver().getName();
+
+                    if (!sender.equalsIgnoreCase(((ProxiedPlayer) commandSender).getDisplayName())) {
+                        allPlayerNames.add(sender);
+                    } else {
+                        allPlayerNames.add(receiver);
+                    }
+                }
+
+                if (strings[1].equalsIgnoreCase("")) {
+                    matches.addAll(allPlayerNames);
+                } else {
+                    for (String player : allPlayerNames) {
+                        if (player.toLowerCase().startsWith(strings[1].toLowerCase())) {
+                            matches.add(player);
+                        }
+                    }
+                }
+
             }
         }
 
