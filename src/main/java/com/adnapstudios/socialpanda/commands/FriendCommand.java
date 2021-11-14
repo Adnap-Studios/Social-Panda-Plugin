@@ -124,13 +124,15 @@ public class FriendCommand extends Command implements TabExecutor {
                     }
 
                     if (strings[0].equalsIgnoreCase("decline")) {
-                        SocialPlayer sender = SocialPanda.getPlayerManager()
+                        SocialPlayer receiver = SocialPanda.getPlayerManager()
                                 .getPlayerByUUID(((ProxiedPlayer) commandSender).getUniqueId().toString());
 
-                        ProxiedPlayer proxiedReceiver = SocialPanda.getInstance().getProxy().getPlayer(strings[1]);
+                        ProxiedPlayer proxiedSender = SocialPanda.getInstance().getProxy().getPlayer(strings[1]);
+                        ProxiedPlayer proxiedReceiver = SocialPanda.getInstance().getProxy()
+                                .getPlayer(UUID.fromString(receiver.getUuid()));
 
-                        SocialPlayer receiver = SocialPanda.getPlayerManager()
-                                .getPlayerByUUID(proxiedReceiver.getUniqueId().toString());
+                        SocialPlayer sender = SocialPanda.getPlayerManager()
+                                .getPlayerByUUID(proxiedSender.getUniqueId().toString());
 
                         try {
                             FriendRequest friendRequest = SocialPanda.getDatabaseManager()
